@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JSX and Babel</title>
+  </head>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      background: #f0f4f8;
+    }
+    .main {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 15px;
+
+      background: #ffffff;
+      border-radius: 8px;
+      border: 5px solid #dcdcdc;
+      height: 200px;
+      width: 300px;
+    }
+
+    .main p {
+      font-size: x-large;
+      color: #34495e;
+    }
+
+    .main button {
+      border: none;
+      outline: none;
+      padding: 10px;
+      color: white;
+      background-color: #e67e22;
+      border-radius: 8px;
+      font-size:x-large;
+    }
+
+    .para {
+      font-size: xx-large;
+      color: #e67e22;
+    }
+  </style>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      // Your JSX code here
+
+      const handleClick = () => {
+        alert("Hello how are you doing?");
+      };
+
+      const MyComponent = () => {
+        return (
+          <React.Fragment>
+            <p className="para">React is a javascript library</p>
+            <div className="main">
+              <p>Click the button below to alert Hello</p>
+              <button onClick={handleClick}>Alert Hello</button>
+            </div>
+          </React.Fragment>
+        );
+      };
+
+      ReactDOM.render(<MyComponent />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
