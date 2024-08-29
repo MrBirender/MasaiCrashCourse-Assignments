@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic List Rendering</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      // Your ItemList component code will go here
+      function Gallery({ children }) {
+        return <div class="gallery">{children}</div>;
+      }
+
+      const Image = ({ src }) => {
+        return (
+          <div className="image-card">
+            <img src={src} alt="Gallery Image" />
+            <h2>Photo</h2>
+          </div>
+        );
+      };
+
+      // Example usage
+      const App = () => (
+        <div>
+          <Gallery>
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/71cb2RCy+aL._AC_SX466_.jpg" />
+            <Image src="https://m.media-amazon.com/images/I/81Q0BbHK9XL.__AC_SX300_SY300_QL70_FMwebp_.jpg" />
+          </Gallery>
+        </div>
+      );
+
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
