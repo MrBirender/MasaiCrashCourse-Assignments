@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Components in React</title>
+    <link rel="stylesheet" href="output.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      // Write your code here
+      const Header = () => {
+        return (
+          <>
+            <h1 className="text-3xl font-bold mt-24">
+              Get Started
+              <span className=" text-green-600"> in 3 easy steps</span>
+            </h1>
+          </>
+        );
+      };
+
+      const Card = ({ num, heading, detail }) => {
+        return (
+          <div className="flex gap-3 flex-col justify-center items-center text-center">
+            <div className="p-2 bg-green-400 rounded-lg">{num}</div>
+            <h1 className="font-bold text-2xl ">{heading}</h1>
+            <p className="text-lg text-slate-500 font-semibold">{detail}</p>
+          </div>
+        );
+      };
+
+      const App = () => {
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <div className="bg-slate-300 h-[600px] w-3/4 rounded-lg flex flex-col gap-10 items-center">
+              <Header />
+              <div className="flex gap-5">
+                <Card
+                  num={"01"}
+                  heading={"Find Your Template"}
+                  detail={
+                    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe ullam ad provident molestiae animi vitae fugiat alias ut voluptatum. Ab voluptates dolores nemo molestiae voluptate iusto eligendi nulla autem similique!"
+                  }
+                />
+                <Card
+                  num={"02"}
+                  heading={"Copy The Code"}
+                  detail={
+                    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe ullam ad provident molestiae animi vitae fugiat alias ut voluptatum. Ab voluptates dolores nemo molestiae voluptate iusto eligendi nulla autem similique!"
+                  }
+                />
+                <Card
+                  num={"03"}
+                  heading={"Enjoy Your Free Time"}
+                  detail={
+                    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe ullam ad provident molestiae animi vitae fugiat alias ut voluptatum. Ab voluptates dolores nemo molestiae voluptate iusto eligendi nulla autem similique!"
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
