@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+   
+    const App = () => {
+      const [color, setColor] = React.useState("");
+      const [displayColor, setDisplayColor] = React.useState("");
+
+      function handleChange(e){
+          const newColor = e.target.value;
+          setColor(newColor)
+          
+      }
+
+      function handleClick(){
+        setDisplayColor(color)
+      }
+
+      
+      return (
+        <div className="container">
+          <h1>Interactive Color Picker</h1>
+          <input onChange={handleChange} value={color} type="text" placeholder="Enter the color or Hexcode here." />
+          <button onClick={handleClick} >Preview Color</button>
+          <div style={{background: displayColor }} className="display">Your color will display here.</div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</html>
