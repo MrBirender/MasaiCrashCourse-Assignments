@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./output.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+    // Input component:
+    const Input = ({ hobbies, setHobbies, maxInput, setMaxInput }) => {
+     
+    
+      function handleHobbyChange(e, index){
+        const updatedHobbies = [...hobbies]
+        updatedHobbies[index] = e.target.value
+        setHobbies(updatedHobbies)
+      }
+
+      const removeHobby = (index) => {
+          if (hobbies.length > 1) {
+            const updatedHobbies = hobbies.filter((_, i) => i !== index);
+            setHobbies(updatedHobbies);
+            setMaxInput((pre) => pre + 1)
+          }
+        };
+      
+      return (
+        <div>
+          {maxInput > 0 &&
+            hobbies.map((hobby, index) => (
+              <div key={index} className="flex gap-3 items-center  pb-6">
+                <i className="fa-solid fa-hands-asl-interpreting text-slate-400"></i>
+                <input
+                  className="border-b-2 border-[#20afaf] p-2 sm:w-72 w-64 sm:text-xl text-2xl bg-transparent focus:outline-none"
+                  type="text"
+                  value={hobby}
+                  placeholder="Enter your hobbie"
+                  onChange={(e) => handleHobbyChange(e, index)}
+                />
+                {index > 0 && (
+                  <button onClick={() => removeHobby(index)} className="text-xl  px-3 bg-[#20afaf] w-26 mr-2 text-white rounded-2xl self-center ">
+                    remove
+                  </button>
+                )}
+              </div>
+            ))}
+        </div>
+      );
+    };
+
+    // card Component:
+    const Card = () => {
+      const [hobbies, setHobbies] = React.useState([""]);
+      const [maxInput, setMaxInput] = React.useState();
+
+      function addHobby() {
+        const updateHobbies = [...hobbies, ""];
+        setHobbies(updateHobbies);
+        setMaxInput(pre=> pre-1)
+      }
+
+      function handleSubmit(e){
+        e.preventDefault()
+        console.log(hobbies)
+      }
+
+      
+      return (
+        <div className="flex items-center gap-8 mx-auto  flex-col w-full sm:w-[75%]  h-[90%]  md:w-[35%] p-10 bg-[url('../Images/tree.jpg')] bg-cover rounded-lg">
+          <div className="flex items-center gap-5 w-full">
+            <i
+              onClick={addHobby}
+              className="fa-solid fa-person-circle-plus text-[#20afaf] text-3xl mr-5 cursor-pointer"
+            ></i>
+            <h1 className="text-4xl text-slate-600 font-semibold pt-6 pb-8 ">
+              Sign Up
+            </h1>
+          </div>
+          <Input hobbies={hobbies} setHobbies={setHobbies} maxInput={maxInput} setMaxInput={setMaxInput}/>
+
+          <button onClick={handleSubmit} className="text-xl py-4 px-6 bg-[#5de7e7]  w-52 mr-32 text-white rounded-2xl ">
+            Submit
+          </button>
+        </div>
+      );
+    };
+
+    const App = () => {
+      return (
+        <div className="bg-[#5de7e7] w-[85%] mx-auto flex justify-center  my-10 h-[90vh] items-center">
+          <Card />
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</html>

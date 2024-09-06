@@ -1,0 +1,20 @@
+{hobbies.map((hobby, index) => (
+    <div
+      key={index}
+      className="flex gap-3 items-center  pb-6"
+    >
+      <i className="fa-solid fa-hands-asl-interpreting text-slate-400"></i>
+      <input
+        className="border-b-2 border-[#20afaf] p-2 w-72 text-xl bg-transparent focus:outline-none"
+        type="text"
+        value={hobby}
+        placeholder="Enter your hobbie"
+        onChange={(e) => handleHobbyChange(e, index)}
+      />
+      {index > 0 && (
+        <button className="text-xl  px-3 bg-[#20afaf] w-26 mr-2 text-white rounded-2xl self-center ">
+          remove
+        </button>
+      )}
+    </div>
+  ))}
