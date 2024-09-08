@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="./output.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const Quiz = ({
+      questions,
+      currentQuestionIndex,
+      handleNext,
+      handleAnswer,
+      selectedAnswer,
+      isCorrect,
+    }) => {
+      const currentQuestionNo = currentQuestionIndex + 1;
+      const currentQuestion = questions[currentQuestionIndex].question;
+      const options = questions[currentQuestionIndex].answer;
+
+      return (
+        <div className="bg-white rounded-lg flex flex-col gap-5 p-6 max-w-[600px] w-[90%] -mt-20 ">
+          <h1 className="text-2xl font-bold text-blue-950 border-b-2 border-blue-950 pb-2">
+            React Interactive Quiz
+          </h1>
+          <h2 className="text-xl font-semibold text-blue-950">
+            {`${currentQuestionNo}. ${currentQuestion}`}
+          </h2>
+
+          {options.map((option, index) => (
+            <ul
+              key={index}
+              className="text-lg font-medium text-blue-800 flex flex-col gap-3 "
+            >
+              <li
+                onClick={() => {
+                  // Allow clicks only if no answer has been selected yet
+                  if (selectedAnswer === null) {
+                    handleAnswer(index);
+                  }
+                }}
+                className={`border border-blue-500 rounded-lg p-2 ${
+                  selectedAnswer !== null
+                    ? // If an answer is selected, highlight green for the correct answer, red for wrong
+                      option.correct
+                      ? "bg-green-500" // Correct answer
+                      : selectedAnswer === index
+                      ? "bg-red-500" // Wrong answer selected by user
+                      : "" // Do nothing if it's not selected and not correct
+                    : "hover:bg-black hover:text-white" // Normal hover effect before selection
+                }`}
+              >
+                {option.text}
+              </li>
+            </ul>
+          ))}
+
+          <button
+            onClick={handleNext}
+            className="py-2 px-16 bg-blue-950 text-white text-xl w-fit self-center rounded-lg hover:translate-y-1"
+          >
+            Next
+          </button>
+        </div>
+      );
+    };
+
+    const App = () => {
+      const quesArr = [
+        {
+          question: "Which is the largest animal in the world?",
+          answer: [
+            { text: "Shark", correct: false },
+            { text: "Blue-Whale", correct: true },
+            { text: "Elephant", correct: false },
+            { text: "Girraffe", correct: false },
+          ],
+        },
+        {
+          question: "Which is the smallest continent in the world?",
+          answer: [
+            { text: "Africa", correct: false },
+            { text: "Austrilia", correct: true },
+            { text: "America", correct: false },
+            { text: "Asia", correct: false },
+          ],
+        },
+        {
+          question: "Which is the largest Desert in the world?",
+          answer: [
+            { text: "Gobi", correct: false },
+            { text: "Shara", correct: false },
+            { text: "Kalahari", correct: false },
+            { text: "Antartica", correct: true },
+          ],
+        },
+        {
+          question: "Which is the smallest country in the world?",
+          answer: [
+            { text: "vetican City", correct: true },
+            { text: "Nepal", correct: false },
+            { text: "Bhutan", correct: false },
+            { text: "Pakistan", correct: false },
+          ],
+        },
+      ];
+
+      const [questions, setQuestions] = React.useState(quesArr);
+      const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
+      const [selectedAnswer, setSelectedAnswer] = React.useState(null); // Track the selected answer
+      const [isCorrect, setIsCorrect] = React.useState(null); // Track whether the answer is correct
+
+      // Function to handle when a user selects an answer
+      const handleAnswer = (index) => {
+        setSelectedAnswer(index);
+        const isAnswerCorrect =
+          questions[currentQuestionIndex].answer[index].correct;
+        setIsCorrect(isAnswerCorrect); // Update isCorrect based on the selected option
+      };
+
+      // Function to handle the "Next" button click
+      const handleNext = () => {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          setSelectedAnswer(null); // Reset the selected answer for the next question
+          setIsCorrect(null); // Reset correctness for the next question
+        } else {
+          alert("You've reached the end of the quiz!");
+        }
+      };
+
+      return (
+        <div className="bg-blue-950 flex justify-center items-center h-screen">
+          <Quiz
+            questions={questions}
+            currentQuestionIndex={currentQuestionIndex}
+            handleNext={handleNext}
+            handleAnswer={handleAnswer}
+            selectedAnswer={selectedAnswer}
+            isCorrect={isCorrect}
+          />
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</html>

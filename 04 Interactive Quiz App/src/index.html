@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+    <link rel="stylesheet" href="./output.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div id="root">hai</div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+
+    const Quiz = ({
+      questions,
+      currentQuestionIndex,
+      handleNext,
+      isCorrect,
+      handleAnswer,
+      selectedAnswer,
+      quizCompleted,
+      playAgain,
+      score,
+     
+    }) => {
+      const currentQuestionNo = currentQuestionIndex + 1;
+      const currentQuestion = questions[currentQuestionIndex].question;
+      const options = questions[currentQuestionIndex].answer;
+
+      return (
+        <div className="bg-white rounded-lg flex flex-col gap-5 p-6 max-w-[600px] w-[90%] -mt-20 ">
+          <h1 className="text-2xl font-bold text-blue-950 border-b-2 border-blue-950 pb-2">
+            React Interactive Quiz
+          </h1>
+          {quizCompleted ? (
+            <div className="flex flex-col gap-5 justify-center items-center ">
+              <h2 className="text-xl font-semibold text-blue-950">
+                You have completed the quiz!
+              </h2>
+              <h3 className="text-xl font-semibold text-blue-950">{`your score is ${score}/4 .`}</h3>
+            </div>
+          ) : (
+            <>
+              {/* Display the question and options if the quiz is not completed */}
+              <h2 className="text-xl font-semibold text-blue-950">
+                {`${currentQuestionNo}/4. ${currentQuestion}`}
+              </h2>
+
+              {options.map((option, index) => (
+                <ul
+                  key={index}
+                  className="text-lg font-medium text-blue-800 flex flex-col gap-3 "
+                >
+                  <li
+                    onClick={() => {
+                      if (selectedAnswer === null) {
+                        handleAnswer(index);
+                      }
+                    }}
+                    className={`border border-blue-500 rounded-lg p-2 ${
+                      selectedAnswer !== null
+                        ? option.correct
+                          ? "bg-green-500 border-white text-white"
+                          : selectedAnswer === index
+                          ? "bg-red-500 border-white text-white"
+                          : ""
+                        : "hover:bg-black hover:text-white"
+                    }`}
+                  >
+                    {option.text}
+                  </li>
+                </ul>
+              ))}
+            </>
+          )}
+
+          <button
+            onClick={quizCompleted ? playAgain : handleNext}
+            className="py-2 px-12 bg-blue-950 text-white text-xl w-fit self-center rounded-lg hover:translate-y-1"
+          >
+            {quizCompleted ? (
+              <p className="flex gap-3 items-center">
+                <i class="fa-solid fa-rotate-right "></i>Play Again
+              </p>
+            ) : (
+              "Next"
+            )}
+          </button>
+        </div>
+      );
+    };
+
+    const App = () => {
+      const quesArr = [
+        {
+          question: "Which is the largest animal in the world?",
+          answer: [
+            { text: "Shark", correct: false },
+            { text: "Blue-Whale", correct: true },
+            { text: "Elephant", correct: false },
+            { text: "Girraffe", correct: false },
+          ],
+        },
+        {
+          question: "Which is the smallest continent in the world?",
+          answer: [
+            { text: "Africa", correct: false },
+            { text: "Austrilia", correct: true },
+            { text: "America", correct: false },
+            { text: "Asia", correct: false },
+          ],
+        },
+        {
+          question: "Which is the largest Desert in the world?",
+          answer: [
+            { text: "Gobi", correct: false },
+            { text: "Shara", correct: false },
+            { text: "Kalahari", correct: false },
+            { text: "Antartica", correct: true },
+          ],
+        },
+        {
+          question: "Which is the smallest country in the world?",
+          answer: [
+            { text: "vetican City", correct: true },
+            { text: "Nepal", correct: false },
+            { text: "Bhutan", correct: false },
+            { text: "Pakistan", correct: false },
+          ],
+        },
+      ];
+      const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
+      const [questions, setQuestions] = React.useState(quesArr);
+      const [selectedAnswer, setSelectedAnswer] = React.useState(null);
+      const [isCorrect, setIsCorrect] = React.useState(null);
+      const [quizCompleted, setQuizCompleted] = React.useState(false);
+      const [score, setScore] = React.useState(0);
+
+      function handleAnswer(index) {
+        setSelectedAnswer(index);
+        const correctAnswer = questions[currentQuestionIndex].answer[index].correct;
+        setIsCorrect(correctAnswer);
+        if(correctAnswer){
+          setScore(pre => pre + 1)
+        }
+      }
+
+      function handleNext() {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex((pre) => pre + 1);
+          setIsCorrect(null);
+          setSelectedAnswer(null);
+        } else {
+          setQuizCompleted(true);
+        }
+      }
+
+      function playAgain() {
+        setCurrentQuestionIndex(0);
+        setSelectedAnswer(null);
+        setIsCorrect(null);
+        setQuizCompleted(false);
+      }
+
+      return (
+        <div className="bg-blue-950 flex justify-center items-center h-screen">
+          <Quiz
+            questions={questions}
+            currentQuestionIndex={currentQuestionIndex}
+            handleNext={handleNext}
+            handleAnswer={handleAnswer}
+            selectedAnswer={selectedAnswer}
+            isCorrect={isCorrect}
+            quizCompleted={quizCompleted}
+            playAgain={playAgain}
+            score={score}
+            
+          />
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</html>
