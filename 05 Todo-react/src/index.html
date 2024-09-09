@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+    <link rel="stylesheet" href="./output.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const TodoComp = ({ todoList, markComplete, editTodo, deleteTodo }) => {
+      return (
+        <div>
+          {todoList.map((todo, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center max-w-[700px] w-[70%] p-2"
+            >
+              <div className="flex gap-4 items-center text-xl">
+                <div
+                  onClick={() => markComplete(index)}
+                  className={`flex p-2 justify-center items-center border-2 border-slate-400 rounded-full w-6 h-6 ${
+                    todo.completed ? "bg-orange-700 border-none" : "bg-white"
+                  }`}
+                >
+                  <i className="fa-solid fa-check text-white"></i>
+                </div>
+                <p
+                  className={`text-lg ${
+                    todo.completed
+                      ? "text-slate-500 line-through"
+                      : "text-slate-500"
+                  } font-semibold capitalize`}
+                >
+                  {todo.text}
+                </p>
+              </div>
+              <div className="flex gap-4 text-xl">
+                <i
+                  onClick={() => editTodo(index)}
+                  className="fa-regular fa-pen-to-square"
+                ></i>
+                <i
+                  onClick={() => deleteTodo(index)}
+                  className="fa-solid fa-xmark"
+                ></i>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    const App = () => {
+      const [todoList, setTodoList] = React.useState(() => {
+        // Load todos from local storage
+        const savedTodos = localStorage.getItem("todos");
+        return savedTodos ? JSON.parse(savedTodos) : [];
+      });
+
+      const [task, setTask] = React.useState("");
+      const [filter, setFilter] = React.useState("all");
+
+      React.useEffect(() => {
+        // Save todos to local storage whenever todoList changes
+        localStorage.setItem("todos", JSON.stringify(todoList));
+      }, [todoList]);
+
+      function handleFilterChange(selectedFilter) {
+        setFilter(selectedFilter);
+      }
+
+      function getFilteredTodos() {
+        return todoList.filter((todo) => {
+          if (filter === "completed") return todo.completed;
+          if (filter === "pending") return !todo.completed;
+          return true; // 'all' case
+        });
+      }
+
+      function handleChange(event) {
+        const newValue = event.target.value;
+        setTask(newValue);
+      }
+
+      function deleteTodo(index) {
+        const updateTodo = todoList.filter((todo, i) => i !== index);
+        setTodoList(updateTodo);
+      }
+
+      function editTodo(index) {
+        const todoToEdit = todoList[index];
+        setTask(todoToEdit.text);
+
+        const updateTodo = todoList.filter((todo, i) => i !== index);
+        setTodoList(updateTodo);
+      }
+
+      function markComplete(index) {
+        const updateTodos = todoList.map((todo, i) =>
+          i === index ? { ...todo, completed: !todo.completed } : todo
+        );
+        setTodoList(updateTodos);
+      }
+
+      function addTodo() {
+        if (task.trim() === "") return; // Prevent adding empty tasks
+        const newTodo = { text: task, completed: false };
+        setTodoList([...todoList, newTodo]);
+        setTask("");
+      }
+
+      return (
+        <main className="bg-blue-800 h-[200vh] p-20">
+          <div
+            id="card"
+            className="rounded-lg p-10 flex flex-col gap-6 bg-white max-w-[600px] w-full mx-auto mt-[80px] mb-[20px ]"
+          >
+            <div id="nav" className="flex items-center gap-2">
+              <h1 className="text-3xl text-blue-800 font-bold">To-Do List</h1>
+              <img className="w-8" src="../Images/todo.png" alt="todo" />
+            </div>
+            <div className="flex">
+              <input
+                onChange={handleChange}
+                value={task}
+                className="border-2 border-dashed border-orange-700 bg-slate-300 px-4 text-slate-600 placeholder:text-slate-600 placeholder:text-lg placeholder:font-medium rounded-[32px] w-[60%] py-4 text-xl font-semibold outline-none"
+                type="text"
+                placeholder="Add your task"
+              />
+              <button
+                onClick={addTodo}
+                className="bg-orange-700 text-white text-lg px-12 -ml-12 py-4 rounded-[32px]"
+              >
+                Add
+              </button>
+              <select
+                className="ml-4 p-2 border-2 border-dashed border-orange-700 rounded-lg bg-slate-300 text-orange-700 "
+                onChange={(e) => handleFilterChange(e.target.value)}
+              >
+                <option value="all">All</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <TodoComp
+              todoList={getFilteredTodos()}
+              markComplete={markComplete}
+              editTodo={editTodo}
+              deleteTodo={deleteTodo}
+            />
+          </div>
+        </main>
+      );
+    };
+
+    const rootElement = document.getElementById("root");
+
+    const root = ReactDOM.createRoot(rootElement);
+
+    root.render(<App />);
+  </script>
+</html>
