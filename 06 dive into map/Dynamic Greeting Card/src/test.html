@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Z-Index Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="flex items-center justify-center h-screen bg-gray-200">
+    <div class="relative w-[300px] h-[300px]">
+      <!-- First div with lower z-index (behind) -->
+      <div
+        class="absolute inset-0 bg-blue-500 z-0 flex items-center justify-center"
+      >
+        <p class="text-white text-xl font-bold">I am behind (z-0)</p>
+      </div>
+
+      <!-- Second div with higher z-index (in front) -->
+      <div
+        class="absolute top-5 left-5 w-[250px] h-[250px] bg-red-500 -z-10 flex items-center justify-center"
+      >
+        <p class="text-white text-xl font-bold">I am in front (z-10)</p>
+      </div>
+
+      <!-- Third div with the highest z-index (on top) -->
+      <div
+        class="absolute top-10 left-10 w-[200px] h-[200px] bg-green-500 z-20 flex items-center justify-center"
+      >
+        <p class="text-white text-xl font-bold">I am on top (z-20)</p>
+      </div>
+    </div>
+  </body>
+</html>
