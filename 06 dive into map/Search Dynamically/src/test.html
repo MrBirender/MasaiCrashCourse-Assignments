@@ -1,0 +1,16 @@
+<div className="grid grid-cols-5 gap-5 p-8">
+    {userArr.map((user, index) => (
+      <div
+        key={index}
+        className="h-56 w-56 rounded-lg shadow-lg bg-slate-500 flex flex-col gap-3 "
+      >
+        <img
+          className="w-full h-32"
+          src={user.newImg}
+          alt={`newImg${index}`}
+        />
+        <h2>{user.name}</h2>
+        <h4>{`000${user.id}`}</h4>
+      </div>
+    ))}
+  </div>

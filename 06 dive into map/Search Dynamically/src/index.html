@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./output.css" />
+
+    <title>Dynamic Search</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const App = () => {
+      const data = [
+        {
+          id: 1,
+          name: "Alice",
+          newImg: "https://via.placeholder.com/150?text=Alice",
+        },
+        {
+          id: 2,
+          name: "Bob",
+          newImg: "https://via.placeholder.com/150?text=Bob",
+        },
+        {
+          id: 3,
+          name: "Charlie",
+          newImg: "https://via.placeholder.com/150?text=Charlie",
+        },
+        {
+          id: 4,
+          name: "David",
+          newImg: "https://via.placeholder.com/150?text=David",
+        },
+        {
+          id: 5,
+          name: "Eve",
+          newImg: "https://via.placeholder.com/150?text=Eve",
+        },
+        {
+          id: 6,
+          name: "Frank",
+          newImg: "https://via.placeholder.com/150?text=Frank",
+        },
+        {
+          id: 7,
+          name: "Grace",
+          newImg: "https://via.placeholder.com/150?text=Grace",
+        },
+        {
+          id: 8,
+          name: "Hannah",
+          newImg: "https://via.placeholder.com/150?text=Hannah",
+        },
+        {
+          id: 9,
+          name: "Ivy",
+          newImg: "https://via.placeholder.com/150?text=Ivy",
+        },
+        {
+          id: 10,
+          name: "Jack",
+          newImg: "https://via.placeholder.com/150?text=Jack",
+        },
+      ];
+      const [userArr, setUserArr] = React.useState(data);
+      const [userInput, setUserInput] = React.useState("");
+      const [searchResults, setSearchResults] = React.useState(data); // Search results
+
+      function handleChange(event) {
+        setUserInput(event.target.value);
+      }
+
+      const handleSearch = () => {
+        const filteredResults = userArr.filter((user) =>
+          user.name.toLowerCase().includes(userInput.toLowerCase())
+        );
+        setSearchResults(filteredResults);
+      };
+
+      return (
+        <div className="flex flex-col">
+          <div id="nav" className="flex gap-3 mt-5 ">
+            <h1 className="text-3xl font-semibold capitalize text-blue-900">
+              User profiles with the Agent code
+            </h1>
+            <input
+              onChange={handleChange}
+              value={userInput}
+              className="w-96  px-4 py-2  rounded-lg shadow-lg bg-slate-400 placeholder:text-lg text-xl"
+              type="text"
+              placeholder="Search profiles here"
+            />
+            <button
+              onClick={handleSearch}
+              className="bg-blue-800 text-white text-lg font-medium px-4 py-2 rounded-lg shadow-lg"
+            >
+              Search
+            </button>
+          </div>
+
+          <main id="main" className="grid grid-cols-5 gap-5 p-8">
+            {searchResults.length > 0 ? (
+              searchResults.map((user, index) => (
+                <div
+                  key={index}
+                  className="h-56 w-56 rounded-lg shadow-lg bg-slate-500 flex flex-col gap-3 "
+                >
+                  <img
+                    className="w-full h-32"
+                    src={user.newImg}
+                    alt={`newImg${index}`}
+                  />
+                  <h2>{user.name}</h2>
+                  <h4>{`000${user.id}`}</h4>
+                </div>
+              ))
+            ) : (
+              <p className="text-2xl text-red-500 col-span-5">
+                No profiles found.
+              </p>
+            )}
+          </main>
+        </div>
+      );
+    };
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</html>

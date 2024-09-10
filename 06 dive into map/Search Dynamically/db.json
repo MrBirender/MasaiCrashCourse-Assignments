@@ -1,0 +1,17 @@
+{
+    "user" : [
+        {
+            "id" : 1 , 
+            "username" : "chota - bheem"
+        }
+    ]
+    ,
+    "posts" : [
+        {
+            "id" : 1 , 
+            "post" : "hello world"
+        }
+    ]
+}
+
+
