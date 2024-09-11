@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Task Manager</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const App = () => {
+      const [tasks, setTasks] = useState([]);
+      const [title, setTitle] = useState("");
+      const [assignee, setAssignee] = useState("");
+      const [filterAssignee, setFilterAssignee] = useState("");
+      const [showIncomplete, setShowIncomplete] = useState(false);
+
+      // Fetch All Tasks
+      const fetchTasks = async () => {
+        try {
+          const response = await axios.get("http://localhost:3001/todos");
+          setTasks(response.data);
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+        }
+      };
+
+      useEffect(() => {
+        fetchTasks();
+      }, []);
+
+      // Add a New Task
+      const addTask = async (e) => {
+        e.preventDefault();
+        if (!title || !assignee) return;
+
+        const newTask = { title, isCompleted: false, assignee };
+
+        try {
+          await axios.post("http://localhost:3001/todos", newTask);
+          setTitle("");
+          setAssignee("");
+          fetchTasks();
+        } catch (error) {
+          console.error("Error adding task:", error);
+        }
+      };
+
+      // Update Task
+      const updateTask = async (id, updatedTask) => {
+        try {
+          await axios.put(`http://localhost:3001/todos/${id}`, updatedTask);
+          fetchTasks();
+        } catch (error) {
+          console.error("Error updating task:", error);
+        }
+      };
+
+      // Delete Task
+      const deleteTask = async (id) => {
+        try {
+          await axios.delete(`http://localhost:3001/todos/${id}`);
+          fetchTasks();
+        } catch (error) {
+          console.error("Error deleting task:", error);
+        }
+      };
+
+      // Filter Tasks (Incomplete or By Assignee)
+      const filteredTasks = tasks.filter((task) => {
+        if (showIncomplete && task.isCompleted) return false;
+        if (filterAssignee && task.assignee !== filterAssignee) return false;
+        return true;
+      });
+
+      return (
+        <div className="container mx-auto p-4">
+          <h1 className="text-4xl font-bold text-center mb-6">Task Manager</h1>
+
+          {/* Add New Task Form */}
+          <form onSubmit={addTask} className="mb-6 flex flex-col gap-4 max-w-lg mx-auto">
+            <input
+              type="text"
+              placeholder="Task Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="p-2 border border-gray-300 rounded"
+            />
+            <input
+              type="text"
+              placeholder="Assignee Name"
+              value={assignee}
+              onChange={(e) => setAssignee(e.target.value)}
+              className="p-2 border border-gray-300 rounded"
+            />
+            <button type="submit" className="bg-blue-500 text-white p-2 rounded">Add Task</button>
+          </form>
+
+          {/* Filter by Assignee */}
+          <div className="flex gap-4 mb-6">
+            <button onClick={fetchTasks} className="bg-green-500 text-white p-2 rounded">Get All Tasks</button>
+            <button onClick={() => setShowIncomplete(!showIncomplete)} className="bg-yellow-500 text-white p-2 rounded">
+              {showIncomplete ? "Show All Tasks" : "Show Incomplete Tasks"}
+            </button>
+            <input
+              type="text"
+              placeholder="Filter by Assignee"
+              value={filterAssignee}
+              onChange={(e) => setFilterAssignee(e.target.value)}
+              className="p-2 border border-gray-300 rounded"
+            />
+          </div>
+
+          {/* Task List */}
+          <div className="grid grid-cols-1 gap-4">
+            {filteredTasks.map((task) => (
+              <div key={task.id} className="p-4 bg-white shadow-md rounded">
+                <h2 className="text-xl font-bold">{task.title}</h2>
+                <p className="text-gray-600">Assignee: {task.assignee}</p>
+                <div className="flex justify-between items-center mt-4">
+                  <button
+                    onClick={() => updateTask(task.id, { ...task, isCompleted: !task.isCompleted })}
+                    className={`p-2 rounded ${
+                      task.isCompleted ? "bg-green-500 text-white" : "bg-red-500 text-white"
+                    }`}
+                  >
+                    {task.isCompleted ? "Completed" : "Incomplete"}
+                  </button>
+                  <button onClick={() => deleteTask(task.id)} className="bg-red-500 text-white p-2 rounded">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</html>

@@ -1,0 +1,10 @@
+{
+  "todos": [
+    {
+      "id": "2d40",
+      "title": "Drink",
+      "isCompleted": true,
+      "assignee": "Sachin"
+    }
+  ]
+}
